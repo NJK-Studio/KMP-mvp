@@ -25,7 +25,7 @@ coroutines = "1.8.1"
 material3Android = "1.2.1"
 
 androidx-paging = "3.3.0"
-androidx-room = "2.7.0-alpha04"
+androidx-room = "2.7.0-alpha08"
 atomicfu = "0.23.2"
 compose = "1.6.8"
 compose-compiler = "1.5.11"

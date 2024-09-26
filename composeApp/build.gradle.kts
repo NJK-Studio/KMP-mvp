@@ -10,9 +10,8 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.skie)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.room)
+//    alias(libs.plugins.room)
 }
-
 kotlin {
     task("testClasses")
     androidTarget {
@@ -187,6 +186,6 @@ dependencies {
 //    arg("measureDuration", "true")
 //}
 
-room {
-    schemaDirectory("$projectDir/schemas")
-}
+//room {
+//    schemaDirectory("$projectDir/schemas")
+//}
