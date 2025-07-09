@@ -1,7 +1,7 @@
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import di.AppContainer
+import di.DI
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -12,10 +12,10 @@ import model.User
 /**
  * Application main viewmodel
  */
-class AppViewModel(private val di: AppContainer) : ViewModel() {
+class AppViewModel() : ViewModel() {
 
     val homeUIState: StateFlow<HomeUiState> =
-        di.dataRepo.getUserProfile().map { HomeUiState(it) }
+        DI.dataRepo.getUserProfile().map { HomeUiState(it) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),

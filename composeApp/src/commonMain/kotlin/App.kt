@@ -1,3 +1,4 @@
+
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,7 +26,6 @@ import androidx.navigation.compose.rememberNavController
 import config.AppRouter
 import config.Global
 import config.NavigationScreens
-import di.AppContainer
 import kmp_mvp.composeapp.generated.resources.Res
 import kmp_mvp.composeapp.generated.resources.app_name
 import model.FabModel
@@ -65,7 +65,7 @@ fun NavGraphBuilder.allScreens() {
 
 @Composable
 fun App(
-    appVM: AppViewModel = viewModel { AppViewModel(AppContainer) },
+    appVM: AppViewModel = viewModel { AppViewModel() },
     navigator: NavHostController = rememberNavController()
 ) {
     navigator.addOnDestinationChangedListener(AppRouter.callback)

@@ -1,13 +1,12 @@
-package di
+package data
 
-import data.api.UserApi
 import data.store.UserDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import model.User
 
 class DataRepository(
-    private val api: UserApi,
+//    private val api: UserApi,
     private val userStore: UserDataStore,
     private val scope: CoroutineScope,
 ) {
@@ -33,10 +32,9 @@ class DataRepository(
 //    }
 //
     suspend fun fetchUser(userName:String){
-        val remoteUser = api.getUserBy(userName)
-        userStore.add(remoteUser)
+//        val remoteUser = api.getUserBy(userName)
+//        userStore.add(remoteUser)
 //        database.fruittieDao().insert(response.feed)
     }
 
 }
-
