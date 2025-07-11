@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.skie)
@@ -31,76 +31,78 @@ kotlin {
         }
     }
 
+    jvm("desktop")
+
     sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.material3.android)
-            implementation(libs.ktor.client.okhttp)
-            implementation(libs.androidx.activity.ktx)
-//            implementation(libs.androidx.room.paging)
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
-        }
-        val commonMain by getting {
-//            kotlin.srcDir("build/generated/ksp/commonMain/kotlin")
-            dependencies {
-                // compose
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(libs.coroutines.core)
-                // ktor
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.content.negotiation)
-                implementation(libs.ktor.serialization.kotlinx.json)
-                implementation(libs.skie.annotations)   // for ios code gen
+        val desktopMain by getting
+
+        commonMain.dependencies {
+            // compose
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(libs.coroutines.core)
+            implementation(libs.material.icons.extended)
+
+            // ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
 //                implementation(libs.androidx.paging.common)
 //                implementation(libs.androidx.room.runtime)
 //                implementation(libs.sqlite.bundled)
-                implementation(libs.kotlinx.atomicfu)
+            implementation(libs.kotlinx.atomicfu)
 
-                implementation(libs.androidx.datastore)
-                api(libs.androidx.datastore.preferences.core)
-                api(libs.androidx.datastore.core.okio)
-                implementation(libs.okio)
+            implementation(libs.androidx.datastore)
+            api(libs.androidx.datastore.preferences.core)
+            api(libs.androidx.datastore.core.okio)
+            implementation(libs.okio)
 
-                // viewmodel
-                implementation(libs.androidx.lifecycle.runtime.compose)
-                implementation(libs.androidx.lifecycle.viewmodel.compose)
-                // navigation
-                implementation(libs.androidx.navigation.compose)
-                // others
-                implementation(libs.kotlinx.datetime)
-                // local projects
-                implementation(projects.shared)
-            }
+            // viewmodel
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel.compose)
+            // navigation
+            implementation(libs.androidx.navigation.compose)
+            // others
+            implementation(libs.kotlinx.datetime)
+            // local projects
+            implementation(projects.shared)
         }
-        jvm("desktop")
-        val desktopMain by getting {
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(libs.coroutines.swing)
-            }
+
+        androidMain.dependencies {
+            implementation(compose.preview)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.androidx.activity.ktx)
+//            implementation(libs.androidx.room.paging)
+            implementation(libs.androidx.material3.android)
         }
-        // disable: Web, desktop
-//    @OptIn(ExperimentalWasmDsl::class)
-//    wasmJs {
-//        moduleName = "composeApp"
-//        browser {
-//            commonWebpackConfig {
-//                outputFileName = "composeApp.js"
-//                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-//                    static = (static ?: mutableListOf()).apply {
-//                        // Serve sources to debug inside browser
-//                        add(project.projectDir.path)
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+            implementation(libs.skie.annotations)   // for ios code gen
+        }
+
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.coroutines.swing)
+        }
+
+//        @OptIn(ExperimentalWasmDsl::class)
+//        wasmJs {
+//            moduleName = "composeApp"
+//            browser {
+//                commonWebpackConfig {
+//                    outputFileName = "composeApp.js"
+//                    devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+//                        static = (static ?: mutableListOf()).apply {
+//                            // Serve sources to debug inside browser
+//                            add(project.projectDir.path)
+//                        }
 //                    }
 //                }
 //            }
+//            binaries.executable()
 //        }
-//        binaries.executable()
-//    }
     }
 }
 
@@ -108,9 +110,9 @@ android {
     namespace = "com.kmp.mvp"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+//    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+//    sourceSets["main"].res.srcDirs("src/androidMain/res")
+//    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
         applicationId = "com.kmp.mvp"

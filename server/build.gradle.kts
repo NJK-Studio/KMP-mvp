@@ -8,7 +8,8 @@ group = "com.kmp.mvp"
 version = "1.0.0"
 application {
     mainClass.set("com.kmp.mvp.ApplicationKt")
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["io.ktor.development"] ?: "false"}")
+    val isDevelopment: Boolean = project.ext.has("development")
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
 dependencies {

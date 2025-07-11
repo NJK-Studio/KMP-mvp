@@ -37,10 +37,11 @@ kotlin {
     iosSimulatorArm64()
 
     sourceSets {
-        val commonMain by getting {
-//            kotlin.srcDir("build/generated/ksp/commonMain/kotlin")
-            dependencies {
-            }
+        commonMain.dependencies {
+            // put your Multiplatform dependencies here
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
     }
 }
