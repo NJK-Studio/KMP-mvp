@@ -41,8 +41,14 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.components.resources)
+            implementation(compose.material3AdaptiveNavigationSuite)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.coroutines.core)
+            // other compose & material
+            implementation(libs.adaptive)
+            implementation(libs.adaptive.layout)
+            implementation(libs.adaptive.navigation)
+            implementation(libs.material3.window.size.class1)
             implementation(libs.material.icons.extended)
 
             // ktor
