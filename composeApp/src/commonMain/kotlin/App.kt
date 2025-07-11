@@ -28,9 +28,9 @@ import config.Global
 import config.NavigationScreens
 import kmp_mvp.composeapp.generated.resources.Res
 import kmp_mvp.composeapp.generated.resources.app_name
-import model.FabModel
+import data.model.FabModel
 import org.jetbrains.compose.resources.stringResource
-import theme.component.AppLauncher
+import ui.theme.component.AppLauncher
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.mvp.ksp
+package ksp
 
 /**
  * annotation for Composable function auto registering to navigation router

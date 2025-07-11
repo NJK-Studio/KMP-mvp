@@ -3,9 +3,9 @@ package data.store
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.okio.OkioSerializer
 import androidx.datastore.core.okio.OkioStorage
-import data.api.json
+import data.http.json
 import kotlinx.coroutines.flow.Flow
-import model.User
+import data.model.User
 import okio.BufferedSink
 import okio.BufferedSource
 import okio.FileSystem

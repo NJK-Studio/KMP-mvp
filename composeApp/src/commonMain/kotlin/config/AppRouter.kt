@@ -2,9 +2,7 @@ package config
 
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import base.RouteName
-import base.ScreenCreator
-import ui.registerScreens
+import ui.screen.registerScreens
 
 object AppRouter {
     // dynamic router for all pages

@@ -3,7 +3,7 @@ package data
 import data.store.UserDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import model.User
+import data.model.User
 
 class DataRepository(
 //    private val api: UserApi,

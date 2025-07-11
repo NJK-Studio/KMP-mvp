@@ -1,11 +1,13 @@
 package config
 
-import base.ScreenCreator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import ui.screen.home.HomeScreen
+import ui.screen.settings.SettingsScreen
+import ui.screen.summary.SummaryScreen
 
 object Global {
 
@@ -24,7 +26,7 @@ enum class NavigationScreens(
     val icon: ImageVector,
     val creator: ScreenCreator,
 ) {
-    Home("Home", Icons.Default.Home, { ui.home.HomeScreen() }),
-    Summary("Summary", Icons.Default.Info, { ui.summary.SummaryScreen() }),
-    Settings("Settings", Icons.Default.Settings, { ui.settings.SettingsScreen() }),
+    Home("Home", Icons.Default.Home, { HomeScreen() }),
+    Summary("Summary", Icons.Default.Info, { SummaryScreen() }),
+    Settings("Settings", Icons.Default.Settings, { SettingsScreen() }),
 }
