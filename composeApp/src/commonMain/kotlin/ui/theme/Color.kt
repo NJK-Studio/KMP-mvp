@@ -1,6 +1,12 @@
 package ui.theme
 import androidx.compose.ui.graphics.Color
 
+val accentColor = Color(0xffFACD66)
+val textColor = Color(0xFFEFEEE0)
+// Player colors
+val playerBackgroundColor = Color(0xCC101010)
+val loadingOverlayColor = Color(0x80000000)
+
 val primaryLight = Color(0xFF6C5E0F)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFF7E388)

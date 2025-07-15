@@ -1,5 +1,6 @@
 package ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -7,6 +8,8 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -29,14 +32,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import config.NavigationScreens
+import getPlatformContext
 import navigation.AppNavHost
 import navigation.KmpNavigationSuiteScaffold
 import org.jetbrains.compose.resources.stringResource
+import player.MediaPlayerController
+import ui.screen.player.KKPlayer
+import ui.screen.player.PlayerViewModel
 import ui.theme.AppBackground
 import ui.theme.KIcons
 import ui.theme.component.KiaTopAppBar
@@ -51,6 +61,14 @@ fun KmpApp(
     AppBackground(modifier) {
         val currentDestination = appState.currentDestination
         val snackbarHostState = remember { SnackbarHostState() }
+
+        val playerViewModel = viewModel {
+            PlayerViewModel(
+                MediaPlayerController(getPlatformContext()),
+                emptyList(),
+                ""
+            )
+        }
 
         KmpNavigationSuiteScaffold(
             navigationSuiteItems = {
@@ -90,7 +108,7 @@ fun KmpApp(
                 contentWindowInsets = WindowInsets(0, 0, 0, 0),
                 snackbarHost = { SnackHost(snackbarHostState) },
             ) { padding ->
-                Column(
+                Box(
                     Modifier
                         .fillMaxSize()
                         .padding(padding)
@@ -99,39 +117,48 @@ fun KmpApp(
                             WindowInsets.safeDrawing.only(
                                 WindowInsetsSides.Horizontal,
                             ),
-                        ),
-                ) {
-                    // Show the top app bar on top level destinations.
-                    val destination = appState.currentTopLevelDestination
-                    var shouldShowTopAppBar = false
-
-                    if (destination != null) {
-                        shouldShowTopAppBar = true
-                        KiaTopAppBar(
-                            titleRes = destination.titleTextId,
-                            navigationIcon = KIcons.Search,
-                            navigationIconContentDescription = "",
-                            actionIcon = KIcons.Settings,
-                            actionIconContentDescription = "",
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = Color.Transparent,
-                            ),
-                            onActionClick = { },
-                            onNavigationClick = { },
                         )
+                ) {
+                    Column(Modifier.fillMaxSize()) {
+                        // Show the top app bar on top level destinations.
+                        val destination = appState.currentTopLevelDestination
+                        var shouldShowTopAppBar = false
+
+                        if (destination != null) {
+                            shouldShowTopAppBar = true
+                            KiaTopAppBar(
+                                titleRes = destination.titleTextId,
+                                navigationIcon = KIcons.Search,
+                                navigationIconContentDescription = "",
+                                actionIcon = KIcons.Settings,
+                                actionIconContentDescription = "",
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    containerColor = Color.Transparent,
+                                ),
+                                onActionClick = { },
+                                onNavigationClick = { },
+                            )
+                        }
+                        // Workaround for https://issuetracker.google.com/338478720
+                        Box(
+                            modifier = Modifier.consumeWindowInsets(
+                                if (shouldShowTopAppBar) {
+                                    WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+                                } else {
+                                    WindowInsets(0, 0, 0, 0)
+                                },
+                            ),
+                        ) {
+                            AppNavHost(appState)
+                        }
                     }
 
+                    // player bar
                     Box(
-                        // Workaround for https://issuetracker.google.com/338478720
-                        modifier = Modifier.consumeWindowInsets(
-                            if (shouldShowTopAppBar) {
-                                WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
-                            } else {
-                                WindowInsets(0, 0, 0, 0)
-                            },
-                        ),
+                        Modifier.fillMaxWidth().height(60.dp)
+                            .background(Color.Gray).align(Alignment.BottomStart),
                     ) {
-                        AppNavHost(appState)
+                        KKPlayer(playerViewModel)
                     }
                 }
             }

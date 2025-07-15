@@ -8,9 +8,10 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.skie)
     alias(libs.plugins.ksp)
+    //alias(libs.plugins.skie)
 //    alias(libs.plugins.room)
+    id("com.google.osdetector") version "1.7.3"
 }
 kotlin {
     task("testClasses")
@@ -34,9 +35,9 @@ kotlin {
     jvm("desktop")
 
     sourceSets {
-        val desktopMain by getting
-
         commonMain.dependencies {
+            // local modules
+            implementation(projects.shared)
             // compose
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -72,8 +73,6 @@ kotlin {
             implementation(libs.androidx.navigation.compose)
             // others
             implementation(libs.kotlinx.datetime)
-            // local projects
-            implementation(projects.shared)
         }
 
         androidMain.dependencies {
@@ -81,16 +80,31 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.activity.ktx)
 //            implementation(libs.androidx.room.paging)
-            implementation(libs.androidx.material3.android)
+            // media3
+            implementation(libs.androidx.media3.exoplayer)
+            implementation(libs.androidx.media3.exoplayer.dash)
+            implementation(libs.androidx.media3.ui)
+            implementation(libs.androidx.media3.session)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation(libs.skie.annotations)   // for ios code gen
+            //implementation(libs.skie.annotations)   // for ios code gen
         }
+        val desktopMain by getting
 
+        val os = readOsName()
         desktopMain.dependencies {
+            implementation(compose.desktop.common)
             implementation(compose.desktop.currentOs)
             implementation(libs.coroutines.swing)
+            implementation(libs.vlcj)
+
+//            implementation("org.openjfx:javafx-base:19:${os}")
+//            implementation("org.openjfx:javafx-graphics:19:${os}")
+//            implementation("org.openjfx:javafx-controls:19:${os}")
+//            implementation("org.openjfx:javafx-swing:19:${os}")
+//            implementation("org.openjfx:javafx-web:19:${os}")
+//            implementation("org.openjfx:javafx-media:19:${os}")
         }
 
 //        @OptIn(ExperimentalWasmDsl::class)
@@ -160,40 +174,13 @@ compose.desktop {
         }
     }
 }
-dependencies {
-//    add("kspAndroid", libs.androidx.room.compiler)
-//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-//    add("kspIosX64", libs.androidx.room.compiler)
-//    add("kspIosArm64", libs.androidx.room.compiler)
-//    add("kspCommonMainMetadata", projects.libProcessor)
-//    implementation(projects.libProcessor)
-//    ksp(projects.libProcessor)
-//    add("kspJvm", projects.libProcessor)
-//    add("kspJvmTest", projects.libProcessor)
-//    add("kspJs", projects.libProcessor)
-//    add("kspJsTest", projects.libProcessor)
-//    add("kspAndroidNativeX64", projects.libProcessor)
-//    add("kspAndroidNativeX64Test", projects.libProcessor)
-//    add("kspAndroidNativeArm64", projects.libProcessor)
-//    add("kspAndroidNativeArm64Test", projects.libProcessor)
-//    add("kspLinuxX64", projects.libProcessor)
-//    add("kspLinuxX64Test", projects.libProcessor)
-//    add("kspMingwX64", projects.libProcessor)
-//    add("kspMingwX64Test", projects.libProcessor)
-//    ksp(projects.libProcessor)
+fun readOsName(): String {
+    return when (osdetector.classifier) {
+        "linux-x86_64" -> "linux"
+        "linux-aarch_64" -> "linux-aarch64"
+        "windows-x86_64" -> "win"
+        "osx-x86_64" -> "mac"
+        "osx-aarch_64" -> "mac-aarch64"
+        else -> throw IllegalStateException("Unknown OS: ${osdetector.classifier}")
+    }
 }
-//kotlin.sourceSets.commonMain {
-//    kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-//}
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-//    if (name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
-//ksp {
-//    arg("measureDuration", "true")
-//}
-
-//room {
-//    schemaDirectory("$projectDir/schemas")
-//}

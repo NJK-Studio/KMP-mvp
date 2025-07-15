@@ -3,4 +3,11 @@
     <string name="home">Home</string>
     <string name="summary">Summary</string>
     <string name="settings">Settings</string>
+
+    <string name="rewind_5_sec">rewind_5_sec</string>
+    <string name="forward_5_sec">forward_5_sec</string>
+    <string name="forward">forward</string>
+    <string name="back">back</string>
+    <string name="pause">pause</string>
+    <string name="play">play</string>
 </resources>

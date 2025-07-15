@@ -1,5 +1,3 @@
-package api
-
 import android.app.Activity
 import android.os.Build
 import androidx.compose.material3.ColorScheme

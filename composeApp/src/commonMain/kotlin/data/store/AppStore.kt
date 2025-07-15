@@ -7,7 +7,7 @@ import config.Global
 import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
 import okio.Path.Companion.toPath
-import api.resolveSystemFilePath
+import resolveSystemFilePath
 
 
 /**
